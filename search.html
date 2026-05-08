@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong — Search</title>
+  <link rel="stylesheet" href="search.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Search overlay -->
+    <div class="overlay" id="overlay">
+
+      <!-- Search bar -->
+      <div class="search-bar">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="searchInput" placeholder="Search songs, subjects…" autocomplete="off" spellcheck="false">
+          <button class="clear-btn" id="clearBtn" style="display:none" onclick="clearSearch()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <button class="cancel-btn" onclick="window.history.back()">Cancel</button>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="filter-row">
+        <div class="chip" id="chip-subject" onclick="toggleChip('subject')">
+          Subject
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="chip" id="chip-genre" onclick="toggleChip('genre')">
+          Genre
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="chip" id="chip-era" onclick="toggleChip('era')">
+          Era
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="chip" id="chip-mood" onclick="toggleChip('mood')">
+          Mood
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <!-- Filter panels -->
+      <div class="filter-panel" id="panel-subject">
+        <div class="filter-panel-title">Subject</div>
+        <div class="sub-chips" id="sub-subject"></div>
+      </div>
+      <div class="filter-panel" id="panel-genre">
+        <div class="filter-panel-title">Genre</div>
+        <div class="sub-chips" id="sub-genre"></div>
+      </div>
+      <div class="filter-panel" id="panel-era">
+        <div class="filter-panel-title">Era</div>
+        <div class="sub-chips" id="sub-era"></div>
+      </div>
+      <div class="filter-panel" id="panel-mood">
+        <div class="filter-panel-title">Mood</div>
+        <div class="sub-chips" id="sub-mood"></div>
+      </div>
+
+      <!-- State demo bar (for development visibility) -->
+      <div class="state-bar">
+        <button class="state-btn active" id="btnRecent" onclick="setDemo('recent')">Recent</button>
+        <button class="state-btn" id="btnResults" onclick="setDemo('results')">Results</button>
+        <button class="state-btn" id="btnEmpty" onclick="setDemo('empty')">No results</button>
+      </div>
+
+      <!-- Body -->
+      <div class="search-results-body" id="body">
+        <!-- populated by JS -->
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a href="input.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span class="nav-label">Create</span>
+      </a>
+      <a href="library.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span class="nav-label">Library</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    const FILTERS = {
+      subject:['Biology','Chemistry','History','Maths','English','Law','Physics','Psychology'],
+      genre:['Afrobeats','Amapiano','Pop','R&B','Hip-Hop','Drill','Lo-fi','Classical'],
+      era:['2020s','2010s','2000s','90s','80s','70s'],
+      mood:['Energetic','Chill','Focused','Happy','Intense','Melancholy'],
+    };
+
+    const SONGS = [
+      {name:'Mitochondria Bop',subject:'Biology',genre:'Afrobeats',art:'🧬',bg:'#1a1228'},
+      {name:'Fall of Rome',subject:'History',genre:'Hype',art:'🏛️',bg:'#1a1f12'},
+      {name:'Tort Law Anthem',subject:'Law',genre:'R&B',art:'⚖️',bg:'#141820'},
+      {name:'Quantum Vibe',subject:'Physics',genre:'Lo-fi',art:'⚛️',bg:'#1a1218'},
+      {name:'Algebra Flows',subject:'Maths',genre:'Hip-Hop',art:'📐',bg:'#131a1a'},
+      {name:'Periodic Heat',subject:'Chemistry',genre:'Pop',art:'🧪',bg:'#1a1818'},
+      {name:'Psych 101',subject:'Psychology',genre:'Drill',art:'🧠',bg:'#181228'},
+    ];
+
+    const RECENT = ['Biology','Mitochondria','History songs','Pop','Maths'];
+    const TOPICS = [
+      {icon:'📚',name:'Biology'},
+      {icon:'🏛️',name:'History'},
+      {icon:'⚖️',name:'Law'},
+      {icon:'🧪',name:'Chemistry'},
+    ];
+
+    // Build sub-chip lists
+    Object.entries(FILTERS).forEach(([key,opts])=>{
+      const wrap = document.getElementById('sub-'+key);
+      opts.forEach(o=>{
+        const el = document.createElement('div');
+        el.className='sub-chip';el.textContent=o;
+        el.onclick=()=>{
+          el.classList.toggle('sel');
+          runSearch();
+        };
+        wrap.appendChild(el);
+      });
+    });
+
+    function toggleChip(key) {
+      const chip=document.getElementById('chip-'+key);
+      const panel=document.getElementById('panel-'+key);
+      const isOpen=chip.classList.contains('active');
+      // close all
+      ['subject','genre','era','mood'].forEach(k=>{
+        document.getElementById('chip-'+k).classList.remove('active');
+        document.getElementById('panel-'+k).classList.remove('open');
+      });
+      if(!isOpen){chip.classList.add('active');panel.classList.add('open');}
+    }
+
+    const inp=document.getElementById('searchInput');
+    const clearBtn=document.getElementById('clearBtn');
+    inp.addEventListener('input',()=>{
+      clearBtn.style.display=inp.value?'flex':'none';
+      runSearch();
+    });
+
+    function clearSearch(){inp.value='';clearBtn.style.display='none';setDemo('recent');}
+
+    let currentDemo='recent';
+    function setDemo(state){
+      currentDemo=state;
+      ['recent','results','empty'].forEach(s=>{
+        const btn = document.getElementById('btn'+cap(s));
+        if(btn) btn.classList.toggle('active',s===state);
+      });
+      render();
+      if(state==='results'){inp.value='Bio';clearBtn.style.display='flex';}
+      if(state==='empty'){inp.value='Xyzzy';clearBtn.style.display='flex';}
+      if(state==='recent'){inp.value='';clearBtn.style.display='none';}
+    }
+    function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+
+    function runSearch(){
+      const q=inp.value.trim().toLowerCase();
+      if(!q){setDemo('recent');return;}
+      const matches=SONGS.filter(s=>s.name.toLowerCase().includes(q)||s.subject.toLowerCase().includes(q)||s.genre.toLowerCase().includes(q));
+      currentDemo=matches.length?'results':'empty';
+      ['recent','results','empty'].forEach(s=>{
+        const btn = document.getElementById('btn'+cap(s));
+        if(btn) btn.classList.toggle('active',s===currentDemo);
+      });
+      render(matches);
+    }
+
+    function render(songs){
+      const body=document.getElementById('body');
+      if(currentDemo==='recent'){
+        body.innerHTML=`
+          <div class="recent-wrap">
+            <div class="recent-label">Recent searches</div>
+            <div class="recent-pills">
+              ${RECENT.map(r=>`<div class="recent-pill" onclick="document.getElementById('searchInput').value='${r}';runSearch()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>${r}</div>`).join('')}
+            </div>
+          </div>
+          <div class="suggested-label">Browse by topic</div>
+          ${TOPICS.map(t=>`<div class="topic-row">
+            <div class="topic-icon" style="font-size:18px">${t.icon}</div>
+            <span class="topic-name">${t.name}</span>
+          </div>`).join('')}`;
+        return;
+      }
+      if(currentDemo==='empty'){
+        body.innerHTML=`<div class="empty-wrap">
+          <svg class="empty-svg" width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="46" fill="rgba(124,77,255,.08)" stroke="rgba(124,77,255,.2)" stroke-width="1.5"/>
+            <circle cx="44" cy="42" r="18" stroke="rgba(255,255,255,.2)" stroke-width="2.5"/>
+            <line x1="57" y1="55" x2="70" y2="68" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"/>
+            <line x1="38" y1="42" x2="50" y2="42" stroke="rgba(255,107,107,.5)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="44" y1="36" x2="44" y2="48" stroke="rgba(255,107,107,.5)" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <div class="empty-title">No songs found</div>
+          <div class="empty-sub">Try a different subject or clear your filters.</div>
+        </div>`;
+        return;
+      }
+      const list=songs||SONGS;
+      body.innerHTML=`<div class="results-wrap">
+        <div class="results-count">${list.length} song${list.length!==1?'s':''} found</div>
+        ${list.map(s=>`<div class="song-card">
+          <div class="song-art" style="background:${s.bg}">${s.art}</div>
+          <div class="song-info">
+            <div class="song-name">${s.name}</div>
+            <div class="song-meta">${s.subject} · ${s.genre}</div>
+            <div class="song-tags">
+              <span class="tag subject">${s.subject}</span>
+              <span class="tag genre">${s.genre}</span>
+            </div>
+          </div>
+          <button class="btn-play-result">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+        </div>`).join('')}
+      </div>`;
+    }
+
+    render();
+  </script>
+</body>
+</html>

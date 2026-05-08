@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong - Home</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Section -->
+    <header class="home-header">
+      <div class="greeting-bar">
+        <div class="greeting-info">
+          <span class="date-text">Saturday, May 2</span>
+          <h1 class="greeting">Hey, Alex <span class="wave">👋</span></h1>
+        </div>
+        <div class="avatar" onclick="window.location.href='settings.html'" style="cursor:pointer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+      </div>
+      
+      <button class="btn-create-song" onclick="window.location.href='input.html'">
+        <div class="btn-content">
+          <span class="icon">✨</span>
+          <span class="text">Create a song</span>
+        </div>
+        <div class="glow"></div>
+      </button>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="home-content">
+      
+      <!-- Recent Songs Scroll -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Jump back in</h2>
+          <span class="see-all" onclick="window.location.href='library.html'" style="cursor:pointer">See all</span>
+        </div>
+        
+        <div class="horizontal-scroll hide-scrollbar">
+          
+          <div class="playback-card" onclick="window.location.href='player.html'" style="cursor:pointer">
+            <div class="card-art biology-art">🧬</div>
+            <div class="card-info">
+              <h3 class="song-name">Mitochondria Bop</h3>
+              <div class="tags">
+                <span class="tag subject-tag">Biology</span>
+                <span class="tag genre-tag">Afrobeats</span>
+              </div>
+            </div>
+            <button class="btn-play">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>
+            </button>
+          </div>
+          
+          <div class="playback-card">
+            <div class="card-art history-art">🏛️</div>
+            <div class="card-info">
+              <h3 class="song-name">Fall of Rome</h3>
+              <div class="tags">
+                <span class="tag subject-tag">History</span>
+                <span class="tag genre-tag">Hype</span>
+              </div>
+            </div>
+            <button class="btn-play">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>
+            </button>
+          </div>
+
+          <div class="playback-card">
+            <div class="card-art law-art">⚖️</div>
+            <div class="card-info">
+              <h3 class="song-name">Tort Law Anthem</h3>
+              <div class="tags">
+                <span class="tag subject-tag">Law</span>
+                <span class="tag genre-tag">R&B</span>
+              </div>
+            </div>
+            <button class="btn-play">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>
+            </button>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- Library Grid -->
+      <section class="section" style="padding-bottom: 6rem;">
+        <div class="section-header">
+          <h2 class="section-title">Your Library</h2>
+        </div>
+        
+        <div class="library-grid">
+          <div class="library-folder folder-biology">
+            <div class="folder-overlay"></div>
+            <h3 class="folder-name">Biology</h3>
+            <span class="track-count">12 tracks</span>
+          </div>
+          
+          <div class="library-folder folder-chemistry">
+            <div class="folder-overlay"></div>
+            <h3 class="folder-name">Chemistry</h3>
+            <span class="track-count">5 tracks</span>
+          </div>
+          
+          <div class="library-folder folder-history">
+            <div class="folder-overlay"></div>
+            <h3 class="folder-name">History</h3>
+            <span class="track-count">8 tracks</span>
+          </div>
+          
+          <div class="library-folder folder-languages">
+            <div class="folder-overlay"></div>
+            <h3 class="folder-name">Languages</h3>
+            <span class="track-count">3 tracks</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a href="input.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span class="nav-label">Create</span>
+      </a>
+      <a href="library.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span class="nav-label">Library</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
+    
+  </div>
+</body>
+</html>

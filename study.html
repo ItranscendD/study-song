@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong - Study Mode</title>
+  <link rel="stylesheet" href="study.css">
+</head>
+<body>
+  <div class="app-container study-container" id="tapArea">
+    
+    <!-- Top Header -->
+    <header class="study-header">
+      <button class="btn-icon" onclick="window.location.href='player.html'; event.stopPropagation();">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="header-titles">
+        <span class="mode-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mode-icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Study Mode
+        </span>
+        <span class="song-title">Photosynthesis Banger</span>
+      </div>
+      <div style="width: 44px;"></div> <!-- Spacer for centering -->
+    </header>
+
+    <!-- Main Content (Centered) -->
+    <main class="study-content">
+      <div class="lyric-card" id="lyricCard">
+        <h1 class="current-lyric" id="currentLyric">Chloroplasts working like machines</h1>
+        
+        <div class="concept-box">
+          <div class="concept-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Original Concept</span>
+          </div>
+          <p class="original-concept" id="originalConcept">Generates chemical energy for biochemical reactions.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Navigation / Progress -->
+    <div class="progress-nav">
+      <div class="circular-progress-container" id="playPauseBtn">
+        <svg class="circular-progress" viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="45"></circle>
+          <circle class="progress" id="timerProgress" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="play-icon-container">
+          <svg class="icon-pause" id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+          <svg class="icon-play" id="iconPlay" style="display:none;" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
+      <p class="nav-hint">Tap anywhere to continue</p>
+    </div>
+
+    <!-- Bottom Toggles -->
+    <footer class="study-footer">
+      <div class="toggles">
+        <button class="toggle-btn" onclick="event.stopPropagation();">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+          <span>Chorus</span>
+        </button>
+        <button class="toggle-btn active" onclick="event.stopPropagation();">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          <span>Vocals</span>
+        </button>
+        <button class="toggle-btn" onclick="event.stopPropagation();">
+          <span style="font-weight:700; font-size:0.9rem;">1x</span>
+          <span>Speed</span>
+        </button>
+      </div>
+    </footer>
+    
+  </div>
+  <script type="module" src="study.js"></script>
+</body>
+</html>

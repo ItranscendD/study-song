@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong — Upload Error Toast</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:           var(--surface-bg);
+      --surface:      var(--surface-card);
+      --surface-2:    var(--surface-elevated);
+      --accent:       var(--color-primary);
+      --accent-soft:  var(--color-primary-soft);
+      --error-soft:   rgba(255,107,107,0.09);
+    }
+
+    html, body { height: 100%; background: #08080A; }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── Phone shell ── */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--bg);
+      border-radius: 44px;
+      border: 8px solid #222;
+      box-shadow: 0 0 80px rgba(0,0,0,0.7), inset 0 0 0 1px #333;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ambient */
+    .phone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 280px 220px at 50% 20%,
+        rgba(124,77,255,0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Input header ── */
+    .input-header {
+      position: relative;
+      z-index: 2;
+      padding: 20px 20px 0;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .btn-back {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: none;
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .btn-back svg { width: 16px; height: 16px; }
+
+    .step-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-prog {
+      height: 3px;
+      background: var(--surface-2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .step-prog-fill {
+      height: 100%;
+      width: 33.3%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ── Page title ── */
+    .page-title {
+      position: relative;
+      z-index: 2;
+      padding: 24px 20px 0;
+    }
+    .page-title h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .page-title p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ── Main content ── */
+    .input-body {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    /* Textarea */
+    .textarea-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .note-input {
+      width: 100%;
+      height: 100%;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px;
+      padding: 18px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.65;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .note-input::placeholder { color: var(--text-muted); }
+    .note-input:focus { border-color: rgba(124,77,255,0.4); }
+
+    .char-count {
+      position: absolute;
+      bottom: 12px; right: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Upload method cards */
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .method-btn {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 14px 12px;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .method-btn:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.12); }
+
+    /* Highlight the upload button as "just used" */
+    .method-btn.used {
+      border-color: rgba(255,107,107,0.3);
+      background: rgba(255,107,107,0.06);
+      color: rgba(255,107,107,0.8);
+    }
+
+    .method-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .method-btn.used .method-icon {
+      background: rgba(255,107,107,0.1);
+    }
+    .method-icon svg { width: 17px; height: 17px; }
+
+    /* ── Footer CTA ── */
+    .input-footer {
+      position: relative;
+      z-index: 2;
+      padding: 0 20px 32px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: var(--radius-pill);
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: not-allowed;
+    }
+
+    /* ══════════════════════════════════════
+       TOAST COMPONENT
+    ══════════════════════════════════════ */
+    .toast-wrap {
+      position: absolute;
+      bottom: 100px;
+      left: 16px;
+      right: 16px;
+      z-index: 100;
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1),
+        opacity   0.3s ease;
+    }
+
+    .toast-wrap.visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* dismiss: slide back down */
+    .toast-wrap.dismissed {
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform 0.3s ease-in,
+        opacity   0.25s ease-in;
+    }
+
+    .toast {
+      background: #1E1824;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 3px solid var(--color-error);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,107,107,0.06) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toast-body {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 14px 12px;
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: var(--color-error);
+      margin-top: 1px;
+    }
+
+    .toast-text {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+
+    .toast-msg {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .toast-close {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .toast-close:hover { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+    .toast-close svg { width: 12px; height: 12px; }
+
+    /* Auto-dismiss progress bar */
+    .toast-timer {
+      height: 2px;
+      background: rgba(255,107,107,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toast-timer-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--color-error);
+      transform-origin: left;
+      animation: timerDrain 4s linear forwards;
+    }
+
+    @keyframes timerDrain {
+      from { transform: scaleX(1);  opacity: 1; }
+      to   { transform: scaleX(0);  opacity: 0.4; }
+    }
+
+    /* ── Replay button ── */
+    .replay-btn {
+      position: absolute;
+      top: 24px; right: 20px;
+      z-index: 3;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .replay-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+    .replay-btn svg { width: 12px; height: 12px; }
+
+    /* ── Mobile fallback ── */
+    @media (max-width: 430px) {
+      html, body { background: var(--bg); }
+      .phone { width: 100%; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
+      .toast-wrap { bottom: 80px; }
+    }
+  </style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <!-- Replay trigger -->
+  <button class="replay-btn" id="replayBtn" onclick="showToast()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+    Replay
+  </button>
+
+  <!-- Header -->
+  <header class="input-header">
+    <div class="step-row">
+      <button class="btn-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <span class="step-text">Step 1 of 3</span>
+      <div style="width:36px"></div>
+    </div>
+    <div class="step-prog">
+      <div class="step-prog-fill"></div>
+    </div>
+  </header>
+
+  <!-- Title -->
+  <div class="page-title">
+    <h1>Add your notes</h1>
+    <p>We'll turn them into a study song</p>
+  </div>
+
+  <!-- Body -->
+  <div class="input-body">
+    <div class="textarea-wrap">
+      <textarea class="note-input" placeholder="Paste or type your notes here…">Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize nutrients from carbon dioxide and water. Photosynthesis in plants generally involves the green pigment chlorophyll and generates oxygen as a byproduct...</textarea>
+      <span class="char-count">312 / 3000</span>
+    </div>
+
+    <div class="method-grid">
+      <!-- Upload highlighted as "just failed" -->
+      <button class="method-btn used" id="uploadBtn">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        </div>
+        Upload file
+      </button>
+
+      <button class="method-btn">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        Scan notes
+      </button>
+
+      <button class="method-btn">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        Voice record
+      </button>
+
+      <button class="method-btn">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        Try sample
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="input-footer">
+    <button class="btn-primary" disabled>Process my notes →</button>
+  </footer>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast-wrap" id="toastWrap" role="alert" aria-live="assertive">
+    <div class="toast">
+      <div class="toast-body">
+        <!-- Error icon (alert triangle) 18px -->
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+
+        <div class="toast-text">
+          <div class="toast-title">Upload failed</div>
+          <div class="toast-msg">File couldn't be read. Try a PDF or plain text.</div>
+        </div>
+
+        <button class="toast-close" id="toastClose" aria-label="Dismiss">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Timer bar -->
+      <div class="toast-timer">
+        <div class="toast-timer-fill" id="toastTimer"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let dismissTimeout = null;
+
+  function showToast() {
+    const wrap  = document.getElementById('toastWrap');
+    const timer = document.getElementById('toastTimer');
+
+    // Clear any running dismiss
+    if (dismissTimeout) {
+      clearTimeout(dismissTimeout);
+      dismissTimeout = null;
+    }
+
+    // Reset state
+    wrap.classList.remove('dismissed');
+    wrap.classList.remove('visible');
+
+    // Force reflow so transition re-triggers
+    void wrap.offsetWidth;
+
+    // Clone timer to restart animation
+    const fresh = timer.cloneNode(true);
+    timer.parentNode.replaceChild(fresh, timer);
+
+    // Show
+    wrap.classList.add('visible');
+
+    // Auto-dismiss after 4s
+    dismissTimeout = setTimeout(() => dismissToast(), 4000);
+  }
+
+  function dismissToast() {
+    const wrap = document.getElementById('toastWrap');
+    wrap.classList.remove('visible');
+    wrap.classList.add('dismissed');
+  }
+
+  document.getElementById('toastClose').addEventListener('click', () => {
+    if (dismissTimeout) clearTimeout(dismissTimeout);
+    dismissToast();
+  });
+
+  // Auto-show on load after 800ms so user sees the context first
+  setTimeout(showToast, 800);
+</script>
+</body>
+</html>

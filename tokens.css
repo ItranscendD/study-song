@@ -1,0 +1,243 @@
+/* ============================================================
+   StudySong Design Tokens v1.0
+   Import this file at the top of every screen CSS.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Core Colour Palette ── */
+:root {
+  --color-primary:       #7C4DFF;
+  --color-primary-light: #A07BFF;
+  --color-primary-dim:   #3D1FAB;
+  --color-primary-soft:  rgba(124, 77, 255, 0.13);
+  --color-primary-border:rgba(124, 77, 255, 0.40);
+
+  --color-accent:        #FFB347;
+  --color-accent-dim:    #CC8A2E;
+  --color-accent-soft:   rgba(255, 179, 71, 0.13);
+  --color-accent-border: rgba(255, 179, 71, 0.30);
+
+  --color-success:       #00E5A0;
+  --color-success-dim:   #007A56;
+  --color-error:         #FF6B6B;
+  --color-error-dim:     #B33030;
+  --color-error-soft:    rgba(255, 107, 107, 0.10);
+  --color-error-border:  rgba(255, 107, 107, 0.30);
+
+  /* Aliases for backward compatibility */
+  --bg-color:      var(--surface-bg);
+  --surface-color: var(--surface-card);
+  --accent-color:  var(--color-primary);
+  --accent-hover:  var(--color-primary-light);
+  --border-color:  var(--surface-divider);
+}
+
+/* ── Surface Palette — Dark Mode ── */
+:root {
+  --surface-bg:       #0E0E12;
+  --surface-card:     #1C1C24;
+  --surface-elevated: #252530;
+  --surface-input:    #14141A;
+  --surface-overlay:  rgba(14, 14, 18, 0.85);
+  --surface-divider:  rgba(255, 255, 255, 0.07);
+}
+
+/* ── Text Palette ── */
+:root {
+  --text-primary:    #F1F0FF;
+  --text-secondary:  #9E9BB8;
+  --text-muted:      #5A5870;
+  --text-on-primary: #FFFFFF;
+  --text-on-accent:  #1A0A00;
+}
+
+/* ── Spacing (4px base) ── */
+:root {
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+}
+
+/* ── Border Radius ── */
+:root {
+  --radius-sm:     6px;
+  --radius-md:     10px;
+  --radius-lg:     16px;
+  --radius-xl:     24px;
+  --radius-pill:   999px;
+  --radius-circle: 50%;
+}
+
+/* ── Elevation / Shadow ── */
+:root {
+  --elevation-0:    none;
+  --elevation-1:    0 2px 12px rgba(124, 77, 255, 0.08);
+  --elevation-2:    0 4px 24px rgba(124, 77, 255, 0.16);
+  --elevation-glow: 0 0 32px rgba(124, 77, 255, 0.30);
+}
+
+/* ── Motion ── */
+:root {
+  --motion-instant: 100ms;
+  --motion-fast:    200ms ease-out;
+  --motion-base:    280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-enter:   340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-slow:    500ms ease-in-out;
+}
+
+/* ── Subject Colour Map ── */
+:root {
+  --subject-biology-bg:     #D4F5E3;
+  --subject-biology-text:   #1A5C3A;
+  --subject-biology-accent: #2ECC71;
+
+  --subject-chemistry-bg:     #D4EAF5;
+  --subject-chemistry-text:   #1A3E5C;
+  --subject-chemistry-accent: #3498DB;
+
+  --subject-history-bg:     #F5ECD4;
+  --subject-history-text:   #5C3E1A;
+  --subject-history-accent: #E67E22;
+
+  --subject-law-bg:     #EDD4F5;
+  --subject-law-text:   #4A1A5C;
+  --subject-law-accent: #9B59B6;
+
+  --subject-maths-bg:     #D4F5F5;
+  --subject-maths-text:   #1A5C5C;
+  --subject-maths-accent: #1ABC9C;
+
+  --subject-languages-bg:     #F5D4D4;
+  --subject-languages-text:   #5C1A1A;
+  --subject-languages-accent: #E74C3C;
+
+  --subject-geography-bg:     #D4F5EA;
+  --subject-geography-text:   #1A5C45;
+  --subject-geography-accent: #27AE60;
+
+  --subject-music-bg:     #F5D4F0;
+  --subject-music-text:   #5C1A52;
+  --subject-music-accent: #E91E8C;
+}
+
+/* ── Global Reset ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'DM Sans', sans-serif;
+  background: #08080A;
+  color: var(--text-primary);
+}
+
+/* ── Phone Frame (desktop preview shell) ── */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 600px) {
+  body { background: #08080A; }
+
+  .app-container {
+    width: 390px;
+    height: 844px;
+    border-radius: 44px;
+    border: 8px solid #222;
+    box-shadow: 0 0 80px rgba(0,0,0,0.7), inset 0 0 0 1px #333;
+    overflow: hidden;
+  }
+}
+
+/* ── Utility: hide scrollbar ── */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ── Shared Components ── */
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background-color: rgba(28, 28, 36, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--surface-divider);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 60px;
+  transition: all var(--motion-fast);
+  text-decoration: none;
+}
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  transition: transform var(--motion-fast);
+}
+
+.nav-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  color: var(--color-primary);
+}
+
+.nav-item.active svg {
+  transform: translateY(-2px);
+}
+
+.nav-item:active svg {
+  transform: scale(0.9);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

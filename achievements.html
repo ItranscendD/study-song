@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong — Achievements</title>
+  <link rel="stylesheet" href="achievements.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- HEADER -->
+    <header class="achievements-header">
+      <div class="achievements-header-left">
+        <h1 class="hdr-title">Your achievements</h1>
+        <p class="hdr-sub">Keep studying to unlock more</p>
+      </div>
+      <div class="streak-pill">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.09 12.17A1 1 0 004.83 14H11l-1 8 8.91-10.17A1 1 0 0018.17 10H12l1-8z"/></svg>
+        14 day streak
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num violet">8</div>
+        <div class="stat-label">Unlocked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">16</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num amber">50%</div>
+        <div class="stat-label">Complete</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-wrap">
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-cat="all">All</div>
+        <div class="tab" data-cat="study">Study</div>
+        <div class="tab" data-cat="creator">Creator</div>
+        <div class="tab" data-cat="social">Social</div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="achievements-grid-wrap">
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <!-- OVERLAY + SHEET -->
+    <div class="achievements-overlay" id="overlay"></div>
+    <div class="achievements-sheet" id="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-inner" id="sheetInner"></div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a href="input.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span class="nav-label">Create</span>
+      </a>
+      <a href="library.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span class="nav-label">Library</span>
+      </a>
+      <a href="settings.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    const BADGES = [
+      {id:'first_song',cat:'study',name:'First Song',desc:'Created your very first study song',icon:'music',color:'violet',unlocked:true,date:'Apr 28, 2026',isNew:false},
+      {id:'streak7',cat:'study',name:'Week Warrior',desc:'Maintained a 7-day study streak',icon:'flame',color:'amber',unlocked:true,date:'May 2, 2026',isNew:false},
+      {id:'nightowl',cat:'study',name:'Night Owl',desc:'Studied past midnight 3 times',icon:'moon',color:'violet',unlocked:true,date:'May 4, 2026',isNew:true},
+      {id:'marathon',cat:'study',name:'Marathon',desc:'Study for 60+ minutes in one session',icon:'clock',color:'violet',unlocked:false},
+      {id:'deepfocus',cat:'study',name:'Deep Focus',desc:'Complete 10 songs without leaving the app',icon:'target',color:'violet',unlocked:false},
+      {id:'streak30',cat:'study',name:'30-Day Legend',desc:'Maintain a 30-day streak',icon:'lightning',color:'amber',unlocked:false},
+      {id:'remix',cat:'creator',name:'Remix King',desc:'Customized 5 songs with different genres',icon:'sliders',color:'violet',unlocked:true,date:'Apr 30, 2026',isNew:false},
+      {id:'lyricist',cat:'creator',name:'Lyricist',desc:'Read all the lyrics on 10 songs',icon:'pen',color:'amber',unlocked:true,date:'May 1, 2026',isNew:false},
+      {id:'beatmaker',cat:'creator',name:'Beat Maker',desc:'Create 20 songs total',icon:'drum',color:'violet',unlocked:false},
+      {id:'vocal',cat:'creator',name:'Vocal Pro',desc:'Use voice record input 5 times',icon:'mic',color:'violet',unlocked:false},
+      {id:'sharing',cat:'social',name:'Sharing is Caring',desc:'Shared a song with a friend',icon:'share',color:'amber',unlocked:true,date:'May 3, 2026',isNew:true},
+      {id:'fan',cat:'social',name:'Fan Favourite',desc:'Get 10 plays on a shared song',icon:'heart',color:'amber',unlocked:true,date:'May 5, 2026',isNew:true},
+      {id:'trendsetter',cat:'social',name:'Trendsetter',desc:'Have a song played by 50+ people',icon:'trending',color:'violet',unlocked:false},
+      {id:'collab',cat:'social',name:'Collab Pro',desc:'Share songs with 5 different friends',icon:'users',color:'violet',unlocked:false},
+    ];
+
+    const ICONS = {
+      music:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+      flame:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 3z"/></svg>`,
+      moon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`,
+      clock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      target:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+      lightning:`<svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon"><path d="M13 2L4.09 12.17A1 1 0 004.83 14H11l-1 8 8.91-10.17A1 1 0 0018.17 10H12l1-8z"/></svg>`,
+      sliders:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>`,
+      pen:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+      drum:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><ellipse cx="12" cy="6" rx="10" ry="4"/><path d="M2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6"/><line x1="7" y1="3.13" x2="3" y2="19"/><line x1="17" y1="3.13" x2="21" y2="19"/></svg>`,
+      mic:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+      share:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+      heart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`,
+      trending:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+      users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="badge-icon"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`,
+    };
+
+    const LOCK_ICON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+    const SHARE_ICON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`;
+
+    let currentCat = 'all';
+
+    function renderGrid(cat) {
+      const grid = document.getElementById('grid');
+      const list = cat === 'all' ? BADGES : BADGES.filter(b => b.cat === cat);
+      grid.innerHTML = list.map(b => `
+        <div class="badge-card ${b.unlocked?'unlocked':'locked'} ${b.color==='amber'?'amber-badge':''} ${b.isNew&&b.unlocked?'new-badge':''}"
+          ${b.unlocked?`onclick="openSheet('${b.id}')"`:''}>
+          <div class="badge-circle">
+            ${ICONS[b.icon]||''}
+            ${!b.unlocked?`<div class="lock-overlay">${LOCK_ICON}</div>`:''}
+          </div>
+          <div class="badge-name">${b.name}</div>
+        </div>
+      `).join('');
+    }
+
+    function openSheet(id) {
+      const b = BADGES.find(x=>x.id===id);
+      if(!b) return;
+      const inner = document.getElementById('sheetInner');
+      inner.innerHTML = `
+        <div class="sheet-circle ${b.color}">${ICONS[b.icon]||''}</div>
+        <div class="sheet-name">${b.name}</div>
+        <div class="sheet-desc">${b.desc}</div>
+        <div class="sheet-date">Earned ${b.date}</div>
+        <div class="sheet-btns">
+          <button class="btn-share-badge">${SHARE_ICON} Share badge</button>
+          <button class="btn-close-sheet" onclick="closeSheet()">Done</button>
+        </div>
+      `;
+      document.getElementById('overlay').classList.add('open');
+      document.getElementById('sheet').classList.add('open');
+    }
+
+    function closeSheet() {
+      document.getElementById('overlay').classList.remove('open');
+      document.getElementById('sheet').classList.remove('open');
+    }
+
+    document.getElementById('overlay').addEventListener('click', closeSheet);
+
+    document.getElementById('tabs').addEventListener('click', e => {
+      const tab = e.target.closest('.tab');
+      if(!tab) return;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      currentCat = tab.dataset.cat;
+      renderGrid(currentCat);
+    });
+
+    renderGrid('all');
+  </script>
+</body>
+</html>

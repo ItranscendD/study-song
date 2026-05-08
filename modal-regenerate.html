@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>StudySong — Regenerate Dialog</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:var(--surface-bg);--surface:var(--surface-card);--surface-elevated:var(--surface-elevated);
+  --accent:var(--color-primary);--as:var(--color-primary-soft);--ab:var(--color-primary-border);
+  --tp:var(--text-primary);--ts:var(--text-secondary);--tm:var(--text-muted);
+  --div:var(--surface-divider);--pill:var(--radius-pill);
+}
+html,body{height:100%;background:#08080A;font-family:'DM Sans',sans-serif}
+body{display:flex;justify-content:center;align-items:center}
+
+/* Phone shell */
+.phone{
+  width:390px;height:844px;background:var(--bg);
+  border-radius:44px;border:8px solid #222;
+  box-shadow:0 0 80px rgba(0,0,0,.7),inset 0 0 0 1px #333;
+  overflow:hidden;position:relative;display:flex;flex-direction:column;
+}
+
+/* BG — player screen */
+.bg{
+  position:absolute;inset:0;z-index:0;padding:20px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.bg::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 260px 200px at 50% 15%,rgba(124,77,255,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
+.bg-hdr{display:flex;justify-content:space-between;align-items:center}
+.bg-back{width:36px;height:36px;border-radius:50%;background:var(--surface);border:none;display:flex;align-items:center;justify-content:center}
+.bg-back svg{width:16px;height:16px;color:var(--tp)}
+.bg-label{font-size:13px;font-weight:600;color:var(--ts)}
+.bg-song{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--tp);text-align:center;margin-top:4px}
+.bg-meta{font-size:13px;color:var(--ts);text-align:center}
+/* Waveform bars */
+.bg-wave{display:flex;align-items:center;justify-content:center;gap:3px;height:60px;margin:8px 0}
+.bg-bar{width:3px;border-radius:2px;background:var(--accent);opacity:.5}
+/* Progress */
+.bg-prog{display:flex;align-items:center;gap:8px;margin:4px 0}
+.bg-prog-track{flex:1;height:3px;border-radius:2px;background:var(--surface)}
+.bg-prog-fill{height:100%;width:30%;background:var(--accent);border-radius:2px}
+.bg-time{font-size:11px;color:var(--tm);min-width:28px}
+/* Controls */
+.bg-controls{display:flex;align-items:center;justify-content:center;gap:24px;margin:4px 0}
+.bg-ctrl{width:44px;height:44px;border-radius:50%;background:var(--surface);border:none;display:flex;align-items:center;justify-content:center}
+.bg-ctrl.main{width:56px;height:56px;background:var(--accent)}
+.bg-ctrl svg{width:18px;height:18px;color:var(--tp)}
+.bg-ctrl.main svg{width:20px;height:20px}
+/* Lyrics */
+.bg-lyrics{display:flex;flex-direction:column;gap:10px;margin-top:8px;padding:0 4px}
+.lyric{font-size:15px;line-height:1.6;color:var(--tm);text-align:center}
+.lyric.active{color:var(--tp);font-weight:600}
+
+/* Dim overlay */
+.overlay{
+  position:absolute;inset:0;z-index:2;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn .25s ease both;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.overlay.hiding{animation:fadeOut .22s ease both}
+@keyframes fadeOut{to{opacity:0}}
+
+/* Modal card */
+.modal{
+  width:320px;
+  background:var(--surface-elevated);
+  border-radius:var(--radius-lg);
+  border:1px solid rgba(255,255,255,.09);
+  padding:28px 24px 24px;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.6),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+  display:flex;flex-direction:column;align-items:center;
+  animation:springIn 340ms cubic-bezier(.34,1.26,.64,1) both;
+  position:relative;z-index:3;
+}
+@keyframes springIn{
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.modal.hiding{animation:springOut 220ms cubic-bezier(.4,0,1,1) both}
+@keyframes springOut{
+  to{transform:scale(.9);opacity:0}
+}
+
+/* Icon badge */
+.icon-badge{
+  width:64px;height:64px;border-radius:18px;
+  background:var(--as);border:1px solid var(--ab);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+  box-shadow:0 0 24px rgba(124,77,255,.2);
+}
+.icon-badge svg{width:32px;height:32px;color:var(--accent)}
+
+/* Pulse ring on icon */
+.icon-ring{
+  position:absolute;width:64px;height:64px;border-radius:18px;
+  border:1.5px solid rgba(124,77,255,.3);
+  animation:ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse{
+  0%,100%{transform:scale(1);opacity:.6}
+  50%{transform:scale(1.12);opacity:0}
+}
+
+.modal-headline{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:18px;
+  color:var(--tp);text-align:center;margin-bottom:10px;line-height:1.2;
+}
+.modal-body{
+  font-size:14px;color:var(--ts);text-align:center;
+  line-height:1.6;margin-bottom:24px;max-width:240px;
+}
+
+/* Divider */
+.modal-divider{width:100%;height:.5px;background:var(--div);margin-bottom:16px}
+
+/* Buttons */
+.btn-primary{
+  width:100%;padding:15px;border-radius:var(--pill);
+  background:var(--accent);color:#fff;border:none;
+  font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;
+  cursor:pointer;margin-bottom:10px;
+  box-shadow:0 8px 24px rgba(124,77,255,.4);
+  position:relative;overflow:hidden;
+  transition:transform .18s,box-shadow .18s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary::after{
+  content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.17),transparent);
+  transform:skewX(-20deg);animation:shine 3s ease-in-out infinite;
+}
+@keyframes shine{0%{left:-100%}25%{left:180%}100%{left:180%}}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(124,77,255,.5)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary svg{width:16px;height:16px}
+
+.btn-ghost{
+  width:100%;padding:13px;border-radius:var(--pill);
+  background:transparent;color:var(--ts);
+  border:1px solid rgba(255,255,255,.1);
+  font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;
+  cursor:pointer;transition:background .18s,color .18s,border-color .18s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--tp);border-color:rgba(255,255,255,.2)}
+.btn-ghost:active{transform:scale(.98)}
+
+/* Replay trigger */
+.replay{
+  position:absolute;top:18px;right:20px;z-index:5;
+  background:var(--surface);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:6px 14px;
+  font-size:12px;font-weight:600;color:var(--ts);
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:background .15s;
+}
+.replay:hover{background:rgba(255,255,255,.07);color:var(--tp)}
+
+@media(max-width:430px){
+  html,body{background:var(--bg)}
+  .phone{width:100%;height:100dvh;border-radius:0;border:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- Replay button -->
+  <button class="replay" id="replayBtn">↺ Replay</button>
+
+  <!-- Background: player screen -->
+  <div class="bg" id="bgScreen">
+    <div class="bg-hdr">
+      <div class="bg-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <span class="bg-label">Now Playing</span>
+      <div class="bg-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </div>
+    </div>
+    <div class="bg-song">Mitochondria Bop</div>
+    <div class="bg-meta">Biology · Afrobeats · 2020s</div>
+    <div class="bg-wave" id="bgWave"></div>
+    <div class="bg-prog">
+      <span class="bg-time">0:32</span>
+      <div class="bg-prog-track"><div class="bg-prog-fill"></div></div>
+      <span class="bg-time" style="text-align:right">2:14</span>
+    </div>
+    <div class="bg-controls">
+      <div class="bg-ctrl"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/></svg></div>
+      <div class="bg-ctrl main"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></div>
+      <div class="bg-ctrl"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg></div>
+    </div>
+    <div class="bg-lyrics">
+      <div class="lyric">Sunlight hitting the leaves</div>
+      <div class="lyric active">Chloroplasts working like machines</div>
+      <div class="lyric">Water and CO₂ combine</div>
+      <div class="lyric">Making glucose, feeling fine</div>
+    </div>
+  </div>
+
+  <!-- Overlay + modal -->
+  <div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+    <div class="modal" id="modal" onclick="event.stopPropagation()">
+
+      <!-- Icon with pulse ring -->
+      <div style="position:relative;margin-bottom:18px;display:flex;align-items:center;justify-content:center;width:64px;height:64px">
+        <div class="icon-ring"></div>
+        <div class="icon-badge" style="position:relative;margin:0">
+          <!-- ArrowsClockwise -->
+          <svg viewBox="0 0 256 256" fill="currentColor">
+            <path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43C98,49.8,73.53,62.6,57.39,84a8,8,0,1,1-12.8-9.6C63.38,50.38,94.09,33.8,126,33.94a95.43,95.43,0,0,1,67.3,28L208,76.69V48a8,8,0,0,1,16,0ZM198.41,172C182.27,193.4,157.9,206.1,131.88,206.06A79.56,79.56,0,0,1,75.75,182.63L61.31,168H90a8,8,0,0,0,0-16H42a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.7,14.39A95.43,95.43,0,0,0,131.94,222c32,0,62.62-16.58,81.27-40.4a8,8,0,1,0-12.8-9.6Z"/>
+          </svg>
+        </div>
+      </div>
+
+      <h2 class="modal-headline">Regenerate this section?</h2>
+      <p class="modal-body">Your current lyrics will be replaced. This can't be undone.</p>
+
+      <div class="modal-divider"></div>
+
+      <button class="btn-primary" id="btnRegen" onclick="dismiss()">
+        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43C98,49.8,73.53,62.6,57.39,84a8,8,0,1,1-12.8-9.6C63.38,50.38,94.09,33.8,126,33.94a95.43,95.43,0,0,1,67.3,28L208,76.69V48a8,8,0,0,1,16,0ZM198.41,172C182.27,193.4,157.9,206.1,131.88,206.06A79.56,79.56,0,0,1,75.75,182.63L61.31,168H90a8,8,0,0,0,0-16H42a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.7,14.39A95.43,95.43,0,0,0,131.94,222c32,0,62.62-16.58,81.27-40.4a8,8,0,1,0-12.8-9.6Z"/></svg>
+        Yes, regenerate
+      </button>
+      <button class="btn-ghost" onclick="dismiss()">Keep current lyrics</button>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Build bg waveform
+const wave = document.getElementById('bgWave');
+for(let i=0;i<52;i++){
+  const b=document.createElement('div');
+  b.className='bg-bar';
+  const h=10+Math.random()*40;
+  b.style.height=h+'px';
+  wave.appendChild(b);
+}
+
+function dismiss(){
+  const overlay=document.getElementById('overlay');
+  const modal=document.getElementById('modal');
+  modal.classList.add('hiding');
+  overlay.classList.add('hiding');
+  setTimeout(()=>{overlay.style.display='none';},220);
+}
+
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('overlay')) dismiss();
+}
+
+document.getElementById('replayBtn').addEventListener('click',()=>{
+  const overlay=document.getElementById('overlay');
+  const modal=document.getElementById('modal');
+  overlay.style.display='flex';
+  overlay.classList.remove('hiding');
+  modal.classList.remove('hiding');
+  // force reflow to restart animation
+  void modal.offsetWidth;
+  modal.style.animation='none';
+  void modal.offsetWidth;
+  modal.style.animation='';
+  overlay.style.animation='none';
+  void overlay.offsetWidth;
+  overlay.style.animation='';
+});
+</script>
+</body>
+</html>

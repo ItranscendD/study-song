@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong - Customize Song</title>
+  <link rel="stylesheet" href="customize.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="input-header">
+      <div class="step-info">
+        <button class="btn-back" onclick="window.location.href='input.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+        <span class="step-text">Step 2 of 3</span>
+        <div style="width: 24px;"></div> <!-- Spacer -->
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="customize-content hide-scrollbar">
+      
+      <!-- AI Summary Card -->
+      <section class="summary-section">
+        <div class="section-header">
+          <h2 class="section-title">Key Concepts Extracted</h2>
+          <span class="ai-badge">✨ AI</span>
+        </div>
+        <div class="summary-card">
+          <ul class="concept-list">
+            <li>Mitochondria acts as the cell's powerhouse.</li>
+            <li>Generates chemical energy for biochemical reactions.</li>
+            <li>Energy is stored as Adenosine Triphosphate (ATP).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Customization Selectors -->
+      <div class="selectors-container">
+        
+        <!-- Genre -->
+        <section class="selector-section">
+          <h3 class="selector-title">Genre</h3>
+          <div class="horizontal-scroll hide-scrollbar" id="genreScroll">
+            <button class="pill-btn selected" data-group="genre">Pop</button>
+            <button class="pill-btn" data-group="genre">Afrobeats</button>
+            <button class="pill-btn" data-group="genre">Hip-hop</button>
+            <button class="pill-btn" data-group="genre">R&B</button>
+            <button class="pill-btn" data-group="genre">Gospel</button>
+            <button class="pill-btn" data-group="genre">Amapiano</button>
+            <button class="pill-btn" data-group="genre">Rock</button>
+          </div>
+        </section>
+
+        <!-- Era -->
+        <section class="selector-section">
+          <h3 class="selector-title">Era</h3>
+          <div class="horizontal-scroll hide-scrollbar timeline-scroll" id="eraScroll">
+            <div class="timeline-line"></div>
+            <button class="timeline-btn" data-group="era">
+              <span class="year">1980s</span>
+              <div class="node"></div>
+            </button>
+            <button class="timeline-btn" data-group="era">
+              <span class="year">1990s</span>
+              <div class="node"></div>
+            </button>
+            <button class="timeline-btn selected" data-group="era">
+              <span class="year">2000s</span>
+              <div class="node"></div>
+            </button>
+            <button class="timeline-btn" data-group="era">
+              <span class="year">2010s</span>
+              <div class="node"></div>
+            </button>
+            <button class="timeline-btn" data-group="era">
+              <span class="year">2020s</span>
+              <div class="node"></div>
+            </button>
+          </div>
+        </section>
+
+        <!-- Mood -->
+        <section class="selector-section">
+          <h3 class="selector-title">Mood</h3>
+          <div class="horizontal-scroll hide-scrollbar" id="moodScroll">
+            <button class="mood-btn" data-group="mood">
+              <span class="emoji">🧘</span>
+              <span class="text">Calm</span>
+            </button>
+            <button class="mood-btn selected" data-group="mood">
+              <span class="emoji">🕺</span>
+              <span class="text">Catchy</span>
+            </button>
+            <button class="mood-btn" data-group="mood">
+              <span class="emoji">😢</span>
+              <span class="text">Emotional</span>
+            </button>
+            <button class="mood-btn" data-group="mood">
+              <span class="emoji">🔥</span>
+              <span class="text">Hype</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Action -->
+    <footer class="input-footer">
+      <button class="btn-primary" id="generateBtn">
+        Generate my song 🎵
+      </button>
+    </footer>
+    
+  </div>
+  <script type="module" src="customize.js"></script>
+</body>
+</html>

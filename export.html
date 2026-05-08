@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong - Export Sheet</title>
+  <link rel="stylesheet" href="export.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Background context to show it's a modal over the player -->
+    <div class="bg-context">
+      <header class="player-header">
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+        <div class="header-text">Now Playing</div>
+        <button class="btn-icon fab-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></button>
+      </header>
+      <div class="track-info">
+        <h1 class="song-title">Photosynthesis Banger</h1>
+        <div class="track-tags"><span class="tag">Biology</span> • <span class="tag">Pop</span></div>
+      </div>
+      <!-- Fake visualizer -->
+      <div class="waveform-fake">
+        <div class="bar" style="height: 40px"></div>
+        <div class="bar" style="height: 70px"></div>
+        <div class="bar" style="height: 50px"></div>
+        <div class="bar" style="height: 80px"></div>
+        <div class="bar" style="height: 30px"></div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <!-- Bottom Sheet Modal -->
+    <div class="bottom-sheet" id="bottomSheet">
+      <div class="sheet-handle"></div>
+      
+      <header class="sheet-header">
+        <h2 class="sheet-title">Save and share your song</h2>
+        <button class="btn-close" id="btnClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </header>
+
+      <div class="sheet-content">
+        
+        <!-- Export Options 2x2 Grid -->
+        <div class="export-grid">
+          
+          <button class="export-card">
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+            </div>
+            <div class="card-text">
+              <span class="export-label">Download MP3</span>
+              <span class="export-desc">Audio only</span>
+            </div>
+          </button>
+          
+          <button class="export-card">
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <div class="card-text">
+              <span class="export-label">Export Lyrics PDF</span>
+              <span class="export-desc">Printable text</span>
+            </div>
+          </button>
+          
+          <button class="export-card">
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            </div>
+            <div class="card-text">
+              <span class="export-label">Get Study Sheet</span>
+              <span class="export-desc">Flashcard format</span>
+            </div>
+          </button>
+          
+          <button class="export-card">
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            </div>
+            <div class="card-text">
+              <span class="export-label">Copy Share Link</span>
+              <span class="export-desc">Send to friends</span>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- Save to Library Section -->
+        <div class="save-section">
+          <h3 class="section-label">Save to Library</h3>
+          <div class="save-controls">
+            
+            <button class="folder-selector">
+              <div class="folder-info">
+                <span class="folder-icon">🧬</span>
+                <span class="folder-name">Biology</span>
+              </div>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            
+            <button class="btn-primary" id="btnSave">
+              Save Song
+            </button>
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+  <script type="module" src="export.js"></script>
+</body>
+</html>

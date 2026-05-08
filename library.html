@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong - Library</title>
+  <link rel="stylesheet" href="library.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Section -->
+    <header class="library-header">
+      <div class="header-top">
+        <h1 class="page-title">Library</h1>
+        <button class="btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <div class="search-bar" onclick="window.location.href='search.html'" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Search songs, subjects, exams..." readonly style="pointer-events:none" />
+      </div>
+
+      <div class="filter-scroll hide-scrollbar">
+        <button class="filter-chip active">All</button>
+        <button class="filter-chip">By Subject</button>
+        <button class="filter-chip">By Date</button>
+        <button class="filter-chip">By Exam</button>
+        <button class="filter-chip">Favorites</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="library-content hide-scrollbar" id="mainContent">
+      
+      <!-- Folders Grid View -->
+      <div class="folders-grid active" id="foldersGrid">
+        
+        <div class="folder-tile biology" data-subject="biology">
+          <div class="folder-bg"></div>
+          <div class="folder-overlay"></div>
+          <div class="folder-content">
+            <div class="folder-header">
+              <span class="subject-icon">🧬</span>
+              <span class="song-count">12 songs</span>
+            </div>
+            <div class="folder-info">
+              <h3 class="subject-name">Biology</h3>
+              <span class="last-edited">Edited 2 hours ago</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="folder-tile history" data-subject="history">
+          <div class="folder-bg"></div>
+          <div class="folder-overlay"></div>
+          <div class="folder-content">
+            <div class="folder-header">
+              <span class="subject-icon">🏛️</span>
+              <span class="song-count">8 songs</span>
+            </div>
+            <div class="folder-info">
+              <h3 class="subject-name">History</h3>
+              <span class="last-edited">Edited yesterday</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="folder-tile law" data-subject="law">
+          <div class="folder-bg"></div>
+          <div class="folder-overlay"></div>
+          <div class="folder-content">
+            <div class="folder-header">
+              <span class="subject-icon">⚖️</span>
+              <span class="song-count">5 songs</span>
+            </div>
+            <div class="folder-info">
+              <h3 class="subject-name">Law</h3>
+              <span class="last-edited">Edited May 1</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="folder-tile languages" data-subject="languages">
+          <div class="folder-bg"></div>
+          <div class="folder-overlay"></div>
+          <div class="folder-content">
+            <div class="folder-header">
+              <span class="subject-icon">🗣️</span>
+              <span class="song-count">3 songs</span>
+            </div>
+            <div class="folder-info">
+              <h3 class="subject-name">Languages</h3>
+              <span class="last-edited">Edited Apr 28</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Detail List View (Hidden initially) -->
+      <div class="folder-detail" id="folderDetail">
+        <div class="detail-header">
+          <button class="btn-back" id="btnBack">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <h2 class="detail-title" id="detailTitle">Biology</h2>
+          <div style="width:24px"></div>
+        </div>
+        
+        <div class="song-list">
+          <div class="song-item">
+            <button class="btn-preview"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg></button>
+            <div class="song-info">
+              <span class="song-name">Mitochondria Bop</span>
+              <span class="song-meta">Pop • 2:08</span>
+            </div>
+            <button class="btn-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg></button>
+          </div>
+
+          <div class="song-item">
+            <button class="btn-preview"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg></button>
+            <div class="song-info">
+              <span class="song-name">Cell Wall Defense</span>
+              <span class="song-meta">Hip-hop • 1:45</span>
+            </div>
+            <button class="btn-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg></button>
+          </div>
+          
+          <div class="song-item">
+            <button class="btn-preview"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg></button>
+            <div class="song-info">
+              <span class="song-name">Photosynthesis</span>
+              <span class="song-meta">R&B • 3:12</span>
+            </div>
+            <button class="btn-more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg></button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- FAB -->
+    <button class="fab-add" id="fabAdd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a href="input.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span class="nav-label">Create</span>
+      </a>
+      <a href="library.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span class="nav-label">Library</span>
+      </a>
+      <a href="settings.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
+    
+  </div>
+  <script type="module" src="library.js"></script>
+</body>
+</html>

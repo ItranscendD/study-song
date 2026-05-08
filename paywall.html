@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>StudySong — Go Premium</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:var(--surface-bg);--surface:var(--surface-card);--sheet:var(--surface-elevated);
+  --accent:var(--color-primary);--accent-soft:var(--color-primary-soft);--accent-border:var(--color-primary-border);
+  --amber:var(--color-accent);--amber-soft:var(--color-accent-soft);--amber-border:var(--color-accent-border);
+  --tp:var(--text-primary);--ts:var(--text-secondary);--tm:var(--text-muted);
+  --div:var(--surface-divider);--pill:var(--radius-pill);
+}
+html,body{height:100%;background:#08080A;font-family:'DM Sans',sans-serif}
+body{display:flex;justify-content:center;align-items:center}
+
+/* ── Phone shell ── */
+.phone{
+  width:390px;height:844px;background:var(--bg);
+  border-radius:44px;border:8px solid #222;
+  box-shadow:0 0 80px rgba(0,0,0,.7),inset 0 0 0 1px #333;
+  display:flex;flex-direction:column;overflow:hidden;position:relative;
+}
+
+/* ── Background screen (settings blur) ── */
+.bg-screen{
+  position:absolute;inset:0;z-index:0;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  padding:20px;
+  filter:blur(1.5px);
+  pointer-events:none;
+}
+.bg-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.bg-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:none;display:flex;align-items:center;justify-content:center}
+.bg-btn svg{width:18px;height:18px;color:var(--tp)}
+.bg-title{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;color:var(--tp)}
+.bg-card{background:#16161C;border-radius:16px;border:1px solid var(--div);overflow:hidden;margin-bottom:12px}
+.bg-row{padding:15px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--div)}
+.bg-row:last-child{border-bottom:none}
+.bg-row-l{font-size:15px;color:var(--tp)}
+.bg-row-r{font-size:14px;color:var(--ts)}
+
+/* ── Subtle dim overlay ── */
+.dim{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.35)}
+
+/* ── Bottom sheet ── */
+.sheet{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
+  background:var(--sheet);
+  border-radius:28px 28px 0 0;
+  border-top:1px solid rgba(255,255,255,.09);
+  padding:14px 20px 36px;
+  box-shadow:0 -12px 60px rgba(0,0,0,.5);
+  transform:translateY(100%);
+  animation:slideUp .5s cubic-bezier(.34,1.06,.64,1) .25s forwards;
+}
+@keyframes slideUp{to{transform:translateY(0)}}
+
+/* Handle */
+.handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.14);margin:0 auto 20px}
+
+/* ── Stars decoration ── */
+.stars-row{display:flex;gap:4px;justify-content:center;margin-bottom:12px}
+.star{color:var(--amber);font-size:14px}
+
+/* Headline */
+.headline{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:22px;
+  color:var(--tp);text-align:center;margin-bottom:8px;
+}
+.subline{
+  font-size:14px;color:var(--ts);text-align:center;
+  line-height:1.5;margin-bottom:20px;
+}
+
+/* ── Feature rows ── */
+.features{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+.feat{display:flex;align-items:flex-start;gap:11px}
+.feat-check{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:var(--accent-soft);border:1px solid rgba(124,77,255,.3);
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.feat-check svg{width:11px;height:11px;color:var(--accent)}
+.feat-text{font-size:14px;color:var(--tp);line-height:1.45;font-weight:400}
+.feat-text strong{font-weight:600}
+
+/* ── Plan pills ── */
+.plans{display:flex;gap:10px;margin-bottom:20px}
+.plan{
+  flex:1;border-radius:16px;padding:14px 12px;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  cursor:pointer;transition:border-color .2s,background .2s;
+  position:relative;text-align:center;
+}
+.plan:active{transform:scale(.98)}
+.plan.selected{
+  border-color:var(--accent-border);
+  background:var(--accent-soft);
+}
+.plan-name{font-size:12px;font-weight:600;color:var(--ts);letter-spacing:.3px;text-transform:uppercase;margin-bottom:5px}
+.plan.selected .plan-name{color:var(--accent)}
+.plan-price{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;color:var(--tp);line-height:1}
+.plan-per{font-size:11px;color:var(--ts);margin-top:4px}
+
+/* Save badge */
+.save-badge{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  background:var(--amber);color:#1a0f00;
+  font-size:10px;font-weight:700;letter-spacing:.3px;
+  padding:3px 9px;border-radius:20px;white-space:nowrap;
+}
+
+/* Selected dot */
+.plan-dot{
+  width:14px;height:14px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.18);
+  background:transparent;
+  margin:8px auto 0;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .2s,background .2s;
+}
+.plan.selected .plan-dot{border-color:var(--accent);background:var(--accent)}
+.plan.selected .plan-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:#fff}
+
+/* ── CTA ── */
+.btn-cta{
+  width:100%;padding:17px;border-radius:var(--pill);
+  background:var(--accent);color:#fff;border:none;
+  font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;
+  cursor:pointer;position:relative;overflow:hidden;
+  box-shadow:0 10px 30px rgba(124,77,255,.45);
+  transition:transform .2s,box-shadow .2s;
+  margin-bottom:14px;display:block;width:100%;
+  letter-spacing:.2px;
+}
+.btn-cta::after{
+  content:'';position:absolute;
+  top:0;left:-100%;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:skewX(-20deg);animation:shine 3s ease-in-out infinite;
+}
+@keyframes shine{0%{left:-100%}25%{left:180%}100%{left:180%}}
+.btn-cta:hover{transform:translateY(-1px);box-shadow:0 14px 36px rgba(124,77,255,.55)}
+.btn-cta:active{transform:scale(.98)}
+
+/* Fine print */
+.fine{font-size:12px;color:var(--tm);text-align:center;line-height:1.5}
+.fine a{color:var(--ts);text-decoration:underline;text-decoration-color:rgba(255,255,255,.2);cursor:pointer}
+
+@media(max-width:430px){
+  html,body{background:var(--bg)}
+  .phone{width:100%;height:100dvh;border-radius:0;border:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- Background: Settings screen (blurred) -->
+  <div class="bg-screen">
+    <div class="bg-hdr">
+      <div class="bg-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <span class="bg-title">Settings</span>
+    </div>
+    <div class="bg-card">
+      <div class="bg-row"><span class="bg-row-l">Default genre</span><span class="bg-row-r">Afrobeats ›</span></div>
+      <div class="bg-row"><span class="bg-row-l">Default mood</span><span class="bg-row-r">Energetic ›</span></div>
+      <div class="bg-row"><span class="bg-row-l">Default era</span><span class="bg-row-r">2020s ›</span></div>
+    </div>
+    <div class="bg-card">
+      <div class="bg-row"><span class="bg-row-l">Auto-play study mode</span><span class="bg-row-r">On</span></div>
+      <div class="bg-row"><span class="bg-row-l">Show note context</span><span class="bg-row-r">On</span></div>
+      <div class="bg-row"><span class="bg-row-l">Playback speed default</span><span class="bg-row-r">1× ›</span></div>
+    </div>
+  </div>
+
+  <!-- Dim -->
+  <div class="dim"></div>
+
+  <!-- Paywall sheet -->
+  <div class="sheet" id="sheet">
+    <div class="handle"></div>
+
+    <!-- Stars -->
+    <div class="stars-row" aria-hidden="true">
+      <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    </div>
+
+    <h2 class="headline">Go Premium</h2>
+    <p class="subline">Unlimited songs. Every genre. Every era.</p>
+
+    <!-- Features -->
+    <div class="features">
+      <div class="feat">
+        <div class="feat-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="feat-text"><strong>Unlimited</strong> song generations</div>
+      </div>
+      <div class="feat">
+        <div class="feat-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="feat-text">All genres including <strong>Afrobeats &amp; Amapiano</strong></div>
+      </div>
+      <div class="feat">
+        <div class="feat-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="feat-text">Export <strong>MP3</strong> + study sheets</div>
+      </div>
+    </div>
+
+    <!-- Plan pills -->
+    <div class="plans">
+      <div class="plan" id="planMonthly" onclick="selectPlan('monthly')">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$4<span style="font-size:13px;font-weight:500">.99</span></div>
+        <div class="plan-per">per month</div>
+        <div class="plan-dot"></div>
+      </div>
+      <div class="plan selected" id="planYearly" onclick="selectPlan('yearly')">
+        <div class="save-badge">Save 40%</div>
+        <div class="plan-name">Yearly</div>
+        <div class="plan-price">$35<span style="font-size:13px;font-weight:500">.99</span></div>
+        <div class="plan-per">per year · $3/mo</div>
+        <div class="plan-dot"></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <button class="btn-cta" id="ctaBtn">Start free trial</button>
+
+    <!-- Fine print -->
+    <p class="fine">Cancel anytime &nbsp;·&nbsp; <a>Restore purchase</a></p>
+  </div>
+
+</div>
+
+<script>
+function selectPlan(plan) {
+  document.getElementById('planMonthly').classList.toggle('selected', plan === 'monthly');
+  document.getElementById('planYearly').classList.toggle('selected', plan === 'yearly');
+  document.getElementById('ctaBtn').textContent = plan === 'monthly'
+    ? 'Start free trial — $4.99/mo'
+    : 'Start free trial';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>StudySong — Empty Library</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: var(--surface-bg);
+      --surface: var(--surface-card);
+      --accent: var(--color-primary);
+      --accent-glow: rgba(124, 77, 255, 0.35);
+      --accent-soft: var(--color-primary-soft);
+      --text-muted: var(--text-muted);
+    }
+
+    html, body {
+      height: 100%;
+      background: #08080A;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── Mobile frame ── */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--bg);
+      border-radius: 44px;
+      border: 8px solid #222;
+      box-shadow: 0 0 80px rgba(0,0,0,0.7), 0 0 0 1px #333 inset;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ambient glow — slightly warmer tint for library variant */
+    .phone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 260px 200px at 50% 25%, rgba(124,77,255,0.14) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 160px at 20% 85%, rgba(124,77,255,0.09) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Screen content ── */
+    .screen {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 100%;
+      padding: 0 2rem;
+    }
+
+    /* ── Illustration ── */
+    .illus-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* radial glow ring */
+    .illus-wrap::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,77,255,0.18) 0%, transparent 70%);
+      animation: breathe 3.5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.9); opacity: 0.6; }
+      50%       { transform: scale(1.1); opacity: 1; }
+    }
+
+    .illus-svg {
+      position: relative;
+      z-index: 2;
+      width: 136px;
+      height: 136px;
+      filter: drop-shadow(0 0 18px rgba(124,77,255,0.4));
+    }
+
+    /* Folder lid lift animation */
+    .folder-lid {
+      transform-origin: left center;
+      animation: lidLift 4s ease-in-out infinite;
+    }
+    @keyframes lidLift {
+      0%, 60%, 100% { transform: rotate(0deg) translateY(0px); }
+      30%            { transform: rotate(-8deg) translateY(-3px); }
+    }
+
+    /* Floating note inside folder */
+    .note-float {
+      animation: noteFloat 3s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes noteFloat {
+      0%, 100% { transform: translateY(0px); opacity: 1; }
+      50%       { transform: translateY(-5px); opacity: 0.85; }
+    }
+
+    /* Sparkle dots */
+    .spark {
+      animation: sparkle 2.2s ease-in-out infinite;
+    }
+    .spark:nth-child(1) { animation-delay: 0s;    }
+    .spark:nth-child(2) { animation-delay: 0.75s; }
+    .spark:nth-child(3) { animation-delay: 1.5s;  }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.15; r: 2px; }
+      50%       { opacity: 1;   r: 3px; }
+    }
+
+    /* Subtle dashed orbit ring */
+    .orbit-ring {
+      animation: spinRing 12s linear infinite;
+      transform-origin: 68px 68px;
+    }
+    @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* ── Typography ── */
+    .headline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--text-primary);
+      text-align: center;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .subline {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.55;
+      max-width: 210px;
+    }
+
+    /* ── Empty-state dot row ── */
+    .dot-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 2rem;
+    }
+    .dot-row span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(124,77,255,0.25);
+      animation: dotPulse 1.8s ease-in-out infinite;
+    }
+    .dot-row span:nth-child(2) { animation-delay: 0.3s; }
+    .dot-row span:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes dotPulse {
+      0%, 100% { background: rgba(124,77,255,0.2); transform: scale(1); }
+      50%       { background: rgba(124,77,255,0.7); transform: scale(1.3); }
+    }
+
+    /* ── CTA pinned bottom ── */
+    .cta-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 1.5rem 3rem;
+      z-index: 2;
+    }
+
+    .btn-cta {
+      width: 100%;
+      padding: 18px;
+      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(124,77,255,0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-cta::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-20deg);
+      animation: shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0%   { left: -100%; }
+      25%  { left: 180%; }
+      100% { left: 180%; }
+    }
+
+    .btn-cta:hover  { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(124,77,255,0.55); }
+    .btn-cta:active { transform: translateY(1px);  box-shadow: 0 6px 18px rgba(124,77,255,0.4); }
+
+    /* ── Mobile fallback ── */
+    @media (max-width: 430px) {
+      html, body { background: var(--bg); }
+      .phone {
+        width: 100%; height: 100dvh;
+        border-radius: 0; border: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="screen">
+
+      <!-- Illustration -->
+      <div class="illus-wrap">
+        <svg class="illus-svg" viewBox="0 0 136 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Dashed orbit ring -->
+          <g class="orbit-ring">
+            <circle cx="68" cy="68" r="60" stroke="rgba(124,77,255,0.12)" stroke-width="1" stroke-dasharray="4 6"/>
+          </g>
+
+          <!-- Sparkle dots on orbit -->
+          <circle class="spark" cx="68" cy="8"  r="2.5" fill="#A385FF"/>
+          <circle class="spark" cx="120" cy="88" r="2"   fill="#7C4DFF"/>
+          <circle class="spark" cx="18"  cy="80" r="2"   fill="#C4B0FF"/>
+
+          <!-- Folder back -->
+          <rect x="22" y="52" width="92" height="64" rx="8" fill="#1E1830"/>
+          <rect x="22" y="52" width="92" height="64" rx="8" stroke="rgba(124,77,255,0.5)" stroke-width="1.5"/>
+
+          <!-- Folder tab (part of lid) -->
+          <path d="M22 52 L22 46 Q22 42 26 42 L55 42 Q60 42 62 46 L66 52 Z" fill="#2A2040" stroke="rgba(124,77,255,0.4)" stroke-width="1.5"/>
+
+          <!-- Folder lid (animates) -->
+          <g class="folder-lid">
+            <rect x="22" y="48" width="92" height="18" rx="5" fill="#2A2040" stroke="rgba(124,77,255,0.45)" stroke-width="1.5"/>
+            <!-- Gloss line on lid -->
+            <line x1="30" y1="52" x2="106" y2="52" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+
+          <!-- Musical note inside folder -->
+          <g class="note-float">
+            <!-- Note head -->
+            <ellipse cx="65" cy="94" rx="8" ry="6" fill="#7C4DFF"/>
+            <ellipse cx="65" cy="94" rx="8" ry="6" fill="rgba(255,255,255,0.08)"/>
+            <!-- Note stem -->
+            <line x1="73" y1="94" x2="73" y2="72" stroke="#7C4DFF" stroke-width="3" stroke-linecap="round"/>
+            <!-- Note flag -->
+            <path d="M73 72 Q90 78 82 88" stroke="#A385FF" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <!-- Glow on note head -->
+            <ellipse cx="65" cy="94" rx="8" ry="6" fill="rgba(124,77,255,0.35)" filter="url(#noteGlow)"/>
+          </g>
+
+          <defs>
+            <filter id="noteGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Text -->
+      <h1 class="headline">No songs yet</h1>
+      <p class="subline">Songs you create get saved here</p>
+
+      <!-- Breathing dots -->
+      <div class="dot-row" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+
+    </div>
+
+    <!-- CTA pinned to bottom -->
+    <div class="cta-wrap">
+      <button class="btn-cta" id="cta-start-creating" onclick="window.location.href='input.html'">
+        Start creating
+      </button>
+    </div>
+
+  </div>
+</body>
+</html>
