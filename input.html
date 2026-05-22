@@ -71,6 +71,94 @@
         Process my notes <span class="arrow">→</span>
       </button>
     </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast-wrap" id="toastWrap" role="alert" aria-live="assertive">
+      <div class="toast" id="toastElement">
+        <div class="toast-body">
+          <svg class="toast-icon" id="toastIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Icon will be set dynamically in JS -->
+          </svg>
+          <div class="toast-text">
+            <div class="toast-title" id="toastTitle">Upload failed</div>
+            <div class="toast-msg" id="toastMsg">File couldn't be read. Try a PDF or plain text.</div>
+          </div>
+          <button class="toast-close" id="toastClose" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="toast-timer">
+          <div class="toast-timer-fill" id="toastTimer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Simulation Bottom Sheet -->
+    <div class="bottom-sheet-overlay" id="uploadSheetOverlay">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <h3 class="sheet-title">Simulate Document Upload</h3>
+        <p class="sheet-desc">Choose an upload scenario to test the prototype flow</p>
+        <div class="sheet-buttons">
+          <button class="sheet-btn success-btn" id="btnSimulateSuccess">
+            <span class="btn-icon">✅</span>
+            <div class="btn-text-group">
+              <span class="btn-label">Simulate Success</span>
+              <span class="btn-sublabel">Loads sample notes successfully</span>
+            </div>
+          </button>
+          <button class="sheet-btn error-btn" id="btnSimulateFailure">
+            <span class="btn-icon">❌</span>
+            <div class="btn-text-group">
+              <span class="btn-label">Simulate Failure</span>
+              <span class="btn-sublabel">Triggers an upload error toast</span>
+            </div>
+          </button>
+        </div>
+        <button class="btn-secondary-sheet" id="btnCloseUploadSheet">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Scanning Simulator Overlay -->
+    <div class="full-screen-overlay" id="scanOverlay">
+      <div class="scanner-view">
+        <div class="scanner-header">
+          <h3>Scanning Notes...</h3>
+          <p>Align your handwriting inside the frame</p>
+        </div>
+        <div class="scan-frame">
+          <div class="scan-line"></div>
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+        </div>
+        <div class="scan-status" id="scanStatus">Positioning camera...</div>
+        <button class="btn-secondary-sheet" id="btnCancelScan">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Voice Recording Simulator Overlay -->
+    <div class="full-screen-overlay" id="voiceOverlay">
+      <div class="recorder-view">
+        <div class="recorder-header">
+          <h3>Recording Audio...</h3>
+          <p>Speak clearly to summarize your concepts</p>
+        </div>
+        <div class="record-pulse-container">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring"></div>
+          <div class="record-mic-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+        </div>
+        <div class="record-timer" id="voiceTimer">00:00</div>
+        <div class="record-waveform" id="voiceWaveform">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <button class="btn-secondary-sheet" id="btnCancelVoice">Cancel</button>
+      </div>
+    </div>
     
   </div>
   <script type="module" src="input.js"></script>

@@ -25,7 +25,7 @@ body {
 
 /* Header & Progress */
 .onboarding-header {
-  padding: 2.5rem 1.5rem 1rem;
+  padding: var(--header-padding-top) 1.5rem var(--header-padding-bottom);
   z-index: 10;
 }
 
@@ -89,7 +89,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem calc(var(--footer-padding-bottom) + 90px);
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -233,6 +233,42 @@ body {
   letter-spacing: -1px;
 }
 
+/* Genre Minimalistic Illustration Styles */
+.genre-tile .genre-illustration {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, color 0.3s ease;
+  z-index: 2;
+}
+
+.genre-tile .genre-illustration svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.genre-tile:hover .genre-illustration {
+  transform: translate(-50%, -8px) scale(1.06);
+  opacity: 0.8;
+}
+
+.genre-tile.selected .genre-illustration {
+  color: #FFFFFF;
+  opacity: 0.95;
+  transform: translate(-50%, -4px) scale(1.02);
+}
+
+
 /* Custom backgrounds for genres to look like cover art */
 .pop { background: linear-gradient(135deg, #FF6B6B, #FF8E53); }
 .afrobeats { background: linear-gradient(135deg, #F9D423, #FF4E50); }
@@ -319,7 +355,7 @@ body {
 
 /* Footer */
 .onboarding-footer {
-  padding: 1rem 1.5rem 2.5rem;
+  padding: 1.5rem 1.5rem var(--footer-padding-bottom);
   z-index: 10;
   background: linear-gradient(to top, var(--bg-color) 80%, rgba(14, 14, 18, 0));
 }
@@ -352,4 +388,15 @@ body {
   background-color: var(--accent-hover);
   transform: translateY(-2px);
   box-shadow: 0 15px 30px rgba(124, 77, 255, 0.5);
+}
+
+@media (max-height: 700px) {
+  .title { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .subtitle { margin-bottom: 1rem; }
+  .subject-card { padding: 1.2rem 1rem; gap: 0.5rem; }
+  .subject-card .icon { font-size: 2.2rem; }
+  .genre-tile { height: 260px; min-width: 200px; }
+  .genre-tile .genre-name { font-size: 1.8rem; }
+  .genre-tile .genre-illustration { width: 100px; height: 100px; top: 10%; }
+  .mood-pill { padding: 0.9rem 1.5rem; font-size: 1rem; }
 }

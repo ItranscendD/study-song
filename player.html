@@ -94,6 +94,68 @@
       </button>
     </footer>
     
+    <!-- Loading and Timeout Simulator Overlay -->
+    <div class="full-screen-overlay" id="loadingOverlay">
+      <div class="loader-view">
+        <div class="loader-header">
+          <h3 id="loaderTitle">Generating Song...</h3>
+          <p id="loaderMeta">Preparing voice model and instrumentation</p>
+        </div>
+        <div class="loading-visualizer" id="loadingVisualizer">
+          <!-- Animation bars -->
+        </div>
+        <div class="loading-status" id="loadingStatus">Synthesizing vocals...</div>
+      </div>
+    </div>
+
+    <!-- Error Bottom Sheet Overlay -->
+    <div class="error-sheet-overlay" id="errorSheetOverlay">
+      <div class="error-card">
+        <div class="sheet-handle"></div>
+        <div class="err-icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <h2 class="err-headline">Generation Timed Out</h2>
+        <p class="err-body">The server took too long to synthesize the audio. Your note data is completely safe. Please try again.</p>
+        <span class="err-code">ERR_GENERATION_TIMEOUT · 45s</span>
+        <div class="btn-row-error">
+          <button class="btn-primary-error" id="btnTryAgain">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Retry generation
+          </button>
+          <button class="btn-ghost-error" onclick="window.location.href='input.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit note inputs
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regeneration Confirmation Modal Overlay -->
+    <div class="modal-regen-overlay" id="regenOverlay">
+      <div class="modal-regen-card">
+        <div style="position:relative;margin-bottom:18px;display:flex;align-items:center;justify-content:center;width:64px;height:64px">
+          <div class="icon-ring"></div>
+          <div class="icon-badge">
+            <svg viewBox="0 0 256 256" fill="currentColor">
+              <path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43C98,49.8,73.53,62.6,57.39,84a8,8,0,1,1-12.8-9.6C63.38,50.38,94.09,33.8,126,33.94a95.43,95.43,0,0,1,67.3,28L208,76.69V48a8,8,0,0,1,16,0ZM198.41,172C182.27,193.4,157.9,206.1,131.88,206.06A79.56,79.56,0,0,1,75.75,182.63L61.31,168H90a8,8,0,0,0,0-16H42a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.7,14.39A95.43,95.43,0,0,0,131.94,222c32,0,62.62-16.58,81.27-40.4a8,8,0,1,0-12.8-9.6Z"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="modal-headline">Regenerate section?</h2>
+        <p class="modal-body">Your current lyrics for this sentence will be replaced. This cannot be undone.</p>
+        <div class="modal-divider"></div>
+        <button class="btn-primary-error" id="btnConfirmRegen">
+          Yes, regenerate
+        </button>
+        <button class="btn-ghost-error" id="btnCancelRegen">Keep current lyrics</button>
+      </div>
+    </div>
+
   </div>
   <script type="module" src="player.js"></script>
 </body>

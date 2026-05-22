@@ -10,7 +10,7 @@
 
 /* Header */
 .library-header {
-  padding: 2.5rem 1.5rem 1rem;
+  padding: var(--header-padding-top) 1.5rem var(--header-padding-bottom);
   background: linear-gradient(to bottom, rgba(14,14,18,1) 0%, rgba(14,14,18,0.95) 80%, rgba(14,14,18,0) 100%);
   position: sticky;
   top: 0;
@@ -111,7 +111,7 @@
 .library-content {
   flex: 1;
   overflow-y: auto;
-  padding: 0 1.5rem 6rem; /* Extra padding for bottom nav & FAB */
+  padding: 0 1.5rem var(--content-padding-bottom); /* Extra padding for bottom nav & FAB */
   position: relative;
 }
 
@@ -322,7 +322,7 @@
 /* FAB */
 .fab-add {
   position: absolute;
-  bottom: 90px;
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   right: 20px;
   width: 60px;
   height: 60px;
@@ -344,50 +344,4 @@
 }
 .fab-add svg { width: 28px; height: 28px; }
 
-/* Bottom Navigation */
-.bottom-nav {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
-  background-color: rgba(28, 28, 36, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--surface-divider);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 20;
-}
 
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  width: 60px;
-  transition: color 0.2s ease;
-}
-
-.nav-item svg {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.2s ease;
-}
-
-.nav-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.nav-item.active {
-  color: var(--color-primary);
-}
-
-.nav-item.active svg {
-  transform: translateY(-2px);
-}

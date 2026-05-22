@@ -10,7 +10,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,7 +100,7 @@ body {
 
 .action-container {
   width: 100%;
-  padding: 0 2rem 3rem 2rem;
+  padding: 0 2rem var(--footer-padding-bottom) 2rem;
   z-index: 10;
   max-width: 400px;
 }

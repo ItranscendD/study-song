@@ -63,6 +63,14 @@
   --space-8:  32px;
   --space-10: 40px;
   --space-12: 48px;
+
+  /* Notch & Screen Safe-Area Spacing */
+  --safe-area-top: calc(env(safe-area-inset-top, 0px) + 20px);
+  --safe-area-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  --header-padding-top: calc(env(safe-area-inset-top, 0px) + 24px);
+  --header-padding-bottom: 16px;
+  --content-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+  --footer-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
 }
 
 /* ── Border Radius ── */
@@ -187,7 +195,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 64px;
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
   background-color: rgba(28, 28, 36, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);

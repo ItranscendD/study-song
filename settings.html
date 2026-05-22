@@ -22,7 +22,7 @@
 
       <!-- PREMIUM UPGRADE -->
       <div class="settings-section" style="margin-top: 1rem;">
-        <div class="settings-card premium-card" onclick="window.location.href='paywall.html'" style="background: linear-gradient(135deg, rgba(124, 77, 255, 0.2) 0%, rgba(255, 107, 107, 0.1) 100%); border: 1px solid var(--color-primary-border); cursor: pointer;">
+        <div class="settings-card premium-card" style="background: linear-gradient(135deg, rgba(124, 77, 255, 0.2) 0%, rgba(255, 107, 107, 0.1) 100%); border: 1px solid var(--color-primary-border); cursor: pointer;">
           <div class="account-row">
             <div class="row-icon ico-amber" style="background: var(--color-accent-soft); color: var(--color-accent);">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -106,7 +106,7 @@
               <div class="row-sub">Opens study mode after generating</div>
             </div>
             <div class="row-right">
-              <button class="toggle on" onclick="this.classList.toggle('on')" aria-label="Auto-play study mode"></button>
+              <button class="toggle on" aria-label="Auto-play study mode"></button>
             </div>
           </div>
 
@@ -119,7 +119,7 @@
               <div class="row-sub">Highlight source notes during playback</div>
             </div>
             <div class="row-right">
-              <button class="toggle on" onclick="this.classList.toggle('on')" aria-label="Show note context"></button>
+              <button class="toggle on" aria-label="Show note context"></button>
             </div>
           </div>
 
@@ -191,6 +191,19 @@
       </a>
     </nav>
 
+    <!-- Name Edit Modal -->
+    <div class="modal-overlay" id="editNameModal" style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px;">
+      <div class="modal-card" style="background: #1C1C24; border: 1px solid var(--surface-divider); border-radius: var(--radius-lg); width: 100%; max-width: 320px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); box-shadow: var(--elevation-xl);">
+        <h3 style="font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text-primary); font-size: 1.15rem; margin: 0;">Edit profile name</h3>
+        <input type="text" id="inputName" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--surface-divider); border-radius: var(--radius-md); padding: var(--space-3); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s;" />
+        <div style="display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: 4px;">
+          <button id="btnCancelName" style="background: transparent; border: 1px solid var(--surface-divider); border-radius: var(--radius-pill); padding: 8px 16px; color: var(--text-secondary); cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;">Cancel</button>
+          <button id="btnSaveName" style="background: var(--color-primary); border: none; border-radius: var(--radius-pill); padding: 8px 20px; color: var(--text-on-primary); cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.85rem; box-shadow: var(--elevation-glow);">Save</button>
+        </div>
+      </div>
+    </div>
+
   </div>
+  <script type="module" src="settings.js"></script>
 </body>
 </html>

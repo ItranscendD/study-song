@@ -11,7 +11,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-primary);
   font-family: 'DM Sans', sans-serif;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,7 +42,7 @@ body {
 
 /* Header */
 .study-header {
-  padding: 1.5rem 1.5rem 1rem;
+  padding: var(--header-padding-top) var(--space-5) var(--header-padding-bottom);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -225,7 +225,7 @@ body {
 
 /* Footer Toggles */
 .study-footer {
-  padding: 0 1.5rem 2.5rem;
+  padding: 0 1.5rem var(--footer-padding-bottom);
   z-index: 10;
 }
 

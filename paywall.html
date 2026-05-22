@@ -186,6 +186,12 @@ body{display:flex;justify-content:center;align-items:center}
   <!-- Paywall sheet -->
   <div class="sheet" id="sheet">
     <div class="handle"></div>
+    <button id="closePaywall" aria-label="Close paywall" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ts); transition: background 0.2s;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+    <style>
+      #closePaywall:hover { background: rgba(255, 255, 255, 0.15) !important; color: var(--tp) !important; }
+    </style>
 
     <!-- Stars -->
     <div class="stars-row" aria-hidden="true">
@@ -243,14 +249,40 @@ body{display:flex;justify-content:center;align-items:center}
 
 </div>
 
-<script>
-function selectPlan(plan) {
+<script type="module">
+import { setPremium } from './db.js';
+
+// Plan selector
+window.selectPlan = function(plan) {
   document.getElementById('planMonthly').classList.toggle('selected', plan === 'monthly');
   document.getElementById('planYearly').classList.toggle('selected', plan === 'yearly');
   document.getElementById('ctaBtn').textContent = plan === 'monthly'
     ? 'Start free trial — $4.99/mo'
     : 'Start free trial';
-}
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ctaBtn = document.getElementById('ctaBtn');
+  const closeBtn = document.getElementById('closePaywall');
+  const dim = document.querySelector('.dim');
+
+  const returnToSettings = () => {
+    window.location.href = 'settings.html';
+  };
+
+  if (closeBtn) closeBtn.addEventListener('click', returnToSettings);
+  if (dim) dim.addEventListener('click', returnToSettings);
+
+  ctaBtn.addEventListener('click', () => {
+    ctaBtn.textContent = 'Activating trial...';
+    ctaBtn.disabled = true;
+    setTimeout(() => {
+      setPremium(true);
+      alert('Congratulations! You are now a StudySong Pro member. ✓');
+      returnToSettings();
+    }, 1000);
+  });
+});
 </script>
 </body>
 </html>

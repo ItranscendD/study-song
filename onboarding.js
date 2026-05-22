@@ -1,3 +1,5 @@
+import { saveUser } from './db.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   let currentStep = 1;
   const totalSteps = 3;
@@ -41,9 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.disabled = !hasSelection;
   };
 
+  const saveOnboardingData = () => {
+    const selectedSubjects = Array.from(document.querySelectorAll('.subject-card.selected .label')).map(el => el.textContent.trim());
+    const selectedGenres = Array.from(document.querySelectorAll('.genre-tile.selected .genre-name')).map(el => el.textContent.trim());
+    const selectedMoods = Array.from(document.querySelectorAll('.mood-pill.selected')).map(el => el.textContent.trim());
+
+    saveUser({
+      subjects: selectedSubjects.length > 0 ? selectedSubjects : ['Biology'],
+      genres: selectedGenres.length > 0 ? selectedGenres : ['Pop'],
+      moods: selectedMoods.length > 0 ? selectedMoods : ['Catchy']
+    });
+  };
+
   const goToStep = (step) => {
     if (step > totalSteps) {
-      // Done - Redirect to home
+      // Save onboarding data and Redirect to home
+      saveOnboardingData();
       window.location.href = 'home.html';
       return;
     }
